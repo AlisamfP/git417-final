@@ -1,3 +1,89 @@
 :root{
     --max_width: 1280px;
+    --light-coral-500: #e29587;
+    --grey: #d3d3d3;
+}
+
+body {
+    background-color: var(--light-coral-500);
+    max-width: var(--max_width);
+    margin: 0 auto;
+    font-size: 16px;
+}
+
+.nav-list {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(3, max-content);
+    gap: 2rem;
+}
+
+#cat-selector-menu {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(4, auto);
+}
+
+#productDisplay {
+    background-color: var(--grey);
+    display: grid;
+    grid-template-rows: repeat(3, auto);
+}
+
+#contact {
+    background-color: var(--grey);
+    padding: 20px 10px;
+}
+
+#contact form {
+    display: grid;
+    grid-template-areas: 
+    "name pref"
+    "phone comments"
+    "email comments"
+    "submit submit";
+    justify-content: center;
+    gap: 1rem;
+}
+#contact form div {
+    display: flex;
+    flex-direction: column;
+    /* height: 2rem; */
+}
+#nameInput {
+    grid-area: name;
+}
+#phoneInput {
+    grid-area: phone;
+}
+#commentInput{
+    grid-area: comments;
+}
+textarea {
+    height: 100px;
+    padding: 1rem;
+    resize: none;
+    outline: 2px solid var(--light-coral-500);
+    outline-offset: -1px;
+    border-radius: 5px;
+}
+form fieldset {
+    grid-area: pref;
+    border: 2px solid var(--light-coral-500);
+}
+#contactSubmitBtn {
+    grid-area: submit;
+    width: 10rem;
+    margin: 0 auto;
+    height: 2rem;
+    border: 2px outset var(--light-coral-500);
+    border-radius: 3px;
+}
+
+#contactSubmitBtn:hover {
+    border-style: inset;
+}
+
+footer {
+    text-align: center;
 }
