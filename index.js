@@ -5,25 +5,25 @@ let catList = [
     {
         name: "Thundercat",
         description: "He's so sweet he gave himself diabetes. Certified therapy animal. Purrs can be heard from across the room.",
-        href: "",
+        href: "images/thunder.jpg",
         alt: ""
     },
     {
         name: "Penny",
         description: "Sassy. Named after the character in Dr. Horrible's Sing Along Blog.",
-        href: "",
+        href: "images/penny.jpg",
         alt: ""    
     },
     {
         name: "Baby",
         description: "A prince. The oldest of the cats and the most insistent when needing pets.",
-        href: "",
+        href: "images/baby.jpg",
         alt: ""
     },
     {
         name: "Taquito",
         description: "Found in a couch where the other thing found was a taquito.",
-        href: "",
+        href: "images/taquito.jpg",
         alt: ""
     }
 ];
@@ -33,28 +33,36 @@ let emailRegex = /^[\w\-\.]+@([\w-]+\.)+[\w-]{2,}$/;
 function loadCats(){
     console.log("in Load Cats")
 	// section to display menu
-	let catDisplayMenu = document.getElementById("cat-selector-menu");
+	let catDisplayMenu = document.getElementById("catSelectorMenu");
     // section to display cat's information
     let catInformation = document.getElementById("catInformation")
 	
-	// empty output string to add onto
-	let output = "";
-	
-	// iterate through list of cats
-	for(let cat in catList){
-        // add each cat to the menu
-		output += `<li class="cat-selector-list-item">${catList[cat].name}</li>`;
-	}
-	
-	//add output to the list
-	catDisplayMenu.innerHTML = output;
-
     //choose random cat in list to show information of
     let randomCat = catList[getRandomNumber(catList.length)];
     // set output to information from randomCat
-    output = `<h3>${randomCat.name}</h3><img src=${randomCat.href} alt=${randomCat.alt}><p>${randomCat.description}</p>`;
-    catInformation.innerHTML = output;
+    setCurrentCatInfo(randomCat);
+    
+	// iterate through array of cats
+	for(let cat in catList){
+        // create new li element
+        let menuItem = document.createElement("li");
+        // check if cat is chosen random cat
+        if(catList[cat] === randomCat){
+            // if current cat, add relevant class
+            menuItem.classList.add('selected-cat');
+        }
+        // add li class for styling to new element
+        menuItem.classList.add('cat-selector-list-item')
+
+        // set cat name the menu items inner html
+        menuItem.innerHTML = catList[cat].name;
+        //add event listener to change to a different cat on click
+        menuItem.addEventListener("click", setCurrentCatInList);
+        // append the menu item to the menu
+        catDisplayMenu.appendChild(menuItem);
+    }
 }
+	
 
 function getRandomNumber(maxValue){
     return Math.floor(Math.random() * maxValue);
@@ -70,11 +78,11 @@ function petBelly(e){
     gameResults.innerHTML = "";
 
     // set output to empty string
-    let output = ""
+    let output = "";
 
     // check that an amount was entered
     if(petCount.value < 1){
-        output += "Please enter a value"
+        output += "Please enter a value";
         gameResults.innerHTML = output;
     }
     else{   
@@ -90,8 +98,46 @@ function petBelly(e){
         }
         gameResults.innerHTML = output;
     }
-    // empty the output string
-    output = "";
+};
+
+function setCurrentCatInfo(cat){
+    console.log("setting current cat info" + cat)
+    // section to display cat's information
+    let catInformation = document.getElementById("catInformation")
+    // empty output string to build onto
+    let output = "";
+    // clear out previous information
+    catInformation.innerHTML = "";
+
+    output += `<h3 id="catName">${cat.name}</h3><img src=${cat.href} alt=${cat.alt}><p id="catDescription">${cat.description}</p>`;
+    catInformation.innerHTML = output;
+}
+
+function setCurrentCatInList(e){
+    e.preventDefault();
+    // get the current cat
+    let currentCat = document.getElementById("catName").getHTML();
+    // get the selected cat
+    let selectedCat = e.target.getHTML();
+
+    // return early if selected cat is same as current cat
+    if(selectedCat === currentCat) return; 
+    
+    // grab the menu list of cats
+    let catMenuList = document.querySelectorAll(".cat-selector-list-item");
+    // iterate through to check for selected cat
+    for(let i=0; i < catMenuList.length; i++){
+        if(catMenuList[i].innerHTML === selectedCat){
+            // add selected class to selected cat
+            catMenuList[i].classList.add('selected-cat')
+        }else {
+            // remove selected class from all other cats
+            catMenuList[i].classList.remove('selected-cat')
+        }
+    }
+
+    setCurrentCatInfo(catList.find(cat => cat.name === selectedCat));
+
 }
 
 document.getElementById("petBellyBtn").addEventListener("click", petBelly);
