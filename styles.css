@@ -2,6 +2,7 @@
     --max_width: 1280px;
     --light-coral-500: #e29587;
     --grey: #d3d3d3;
+    --light-mode-text-color: #333;
 }
 
 body {
@@ -10,46 +11,85 @@ body {
     margin: 0 auto;
     font-size: 16px;
 }
+header {
+    display: grid;
+    grid-template-columns: auto auto;
+    align-items: end;
+    justify-items: center;
+}
+#darkModeToggle {
+    grid-row: 2/3;
+    grid-column: 2/3;
+}
 
+#darkModeToggle img {
+    width: 100px;
+    height: 150px;
+    margin-bottom: -21px
+}
+.main-navigation {
+    grid-row: 2/3;
+    grid-column: 1/2;
+}
 .nav-list {
     list-style: none;
     display: grid;
     grid-template-columns: repeat(3, max-content);
     gap: 2rem;
 }
-
-#catSelectorMenu {
-    list-style: none;
-    display: grid;
-    grid-template-columns: repeat(4, auto);
-    grid-row: 3 / 4;
-}
-
-.selected-cat{
-    text-decoration: underline;
-    text-underline-offset: 0.5rem;
-}
-
-#catInformation{
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-}
-
-#catName {
-    grid-column: 2/3;
-}
-
-#catInformation img {
-    width: 250px;
-    height: 250px;
-    object-fit: cover;
-    grid-row: 1/3;
+.nav-list-link{
+    text-decoration: none;
+    color: var(--light-mode-text-color);
+    border-bottom: 3px solid var(--grey);
+    margin: 1rem;
+    padding: 0.5rem;
 }
 
 #productDisplay {
     background-color: var(--grey);
     display: grid;
     grid-template-rows: repeat(3, auto);
+    justify-content: center;
+}
+#catSelectorMenu {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(4, auto);
+    grid-row: 3 / 4;
+}
+.selected-cat{
+    text-decoration: underline;
+    text-underline-offset: 0.5rem;
+}
+#catInformation{
+    display: grid;
+    grid-template-columns: min-content 400px;
+    grid-template-rows: 150px auto;
+    justify-items: start;
+    align-items: start;
+}
+#catInformation img {
+    height: 350px;
+    width: 350px;
+    object-fit: cover;
+    grid-row: 1/3;
+}
+#catName {
+    grid-column: 2/3;
+    width: 50%;
+    margin: 2rem auto;
+    box-shadow: 0px 25px 0px -10px;
+    text-align: center;
+}
+#catDescription {
+    border: 1px solid var(--light-coral-500);
+    padding: 1rem;
+    margin: 0 1rem;
+}
+
+#gamePlay{
+    display: grid;
+    
 }
 
 #contact {

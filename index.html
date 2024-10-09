@@ -10,7 +10,9 @@
 <body>
     <header>
         <h1>CATS!</h1>
-        <nav>
+        <span id="darkModeToggle">
+        </span>
+        <nav class="main-navigation">
             <ul class="nav-list">
                 <li class="nav-list-item">
                     <a class="nav-list-link" href="#productDisplay">Product Display</a>
@@ -34,10 +36,10 @@
         </section>
         <section id="gamePlay">
             <h2>Rub its Belly</h2>
-            <p>Do you feel lucky punk? Try to scritch this cat's belly without getting attacked.</p>
+            <p>Do you feel lucky punk? Try to pet this cat's belly without getting attacked.</p>
             <p>The cat will only tolerate 10 pets max.</p> 
-            <label for="scritchCount">So, how many belly scritches you gonna give?</label>
-            <input type="number" name="scritchCount" id="scritchCount" min="1" max="10">
+            <label for="petCount">So, how many belly petes you gonna give?</label>
+            <input type="number" name="petCount" id="petCount" min="1" max="10">
             <button id="petBellyBtn">Enter</button>
             <p id="gameResults"></p>
         </section>
