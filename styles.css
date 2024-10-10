@@ -1,22 +1,54 @@
 :root{
     --max_width: 1280px;
+
     --light-coral-500: #e29587;
-    --grey: #d3d3d3;
-    --light-mode-text-color: #333;
+    --light-grey: #d3d3d3;
+
+    --med-grey: #636363;
+    
+    --dark-coral: #8c5a51;
+    --dark-grey: #333;
+    --dark-mode-text-color: #D1B39F;
+}
+
+.isValid:after{
+    content: '✓';
+    color: green;
+
+}
+.isNotValid:after{
+    content: '×';
+    color: red;
 }
 
 body {
-    background-color: var(--light-coral-500);
     max-width: var(--max_width);
     margin: 0 auto;
     font-size: 16px;
 }
+/* light mode styles */
+.light-mode {
+    background-color: var(--light-coral-500);
+    color: var(--dark-grey);
+}
+
+/* dark mode styles */
+.dark-mode{
+    background-color: var(--dark-grey);
+    color: var(--dark-mode-text-color);
+}
+.dark-mode-alt {
+    background-color: var(--med-grey);
+}
+
 header {
     display: grid;
     grid-template-columns: auto auto;
     align-items: end;
     justify-items: center;
+    fill-opacity: 1;
 }
+
 #darkModeToggle {
     grid-row: 2/3;
     grid-column: 2/3;
@@ -27,6 +59,15 @@ header {
     height: 150px;
     margin-bottom: -21px
 }
+
+.input-error {
+    border: 1px solid red;
+}
+.hidden {
+    display: none;
+}
+
+/* main navigation */
 .main-navigation {
     grid-row: 2/3;
     grid-column: 1/2;
@@ -39,14 +80,14 @@ header {
 }
 .nav-list-link{
     text-decoration: none;
-    color: var(--light-mode-text-color);
-    border-bottom: 3px solid var(--grey);
+    color: var(--dark-grey);
+    border-bottom: 3px solid var(--light-grey);
     margin: 1rem;
     padding: 0.5rem;
 }
-
+/* product display area aka cat selector */
 #productDisplay {
-    background-color: var(--grey);
+    background-color: var(--light-grey);
     display: grid;
     grid-template-rows: repeat(3, auto);
     justify-content: center;
@@ -87,13 +128,44 @@ header {
     margin: 0 1rem;
 }
 
+/* game play section aka belly pets */
 #gamePlay{
     display: grid;
-    
+    grid-template-columns: auto;
+    justify-content: center;
+    justify-items: center;
+}
+/* 
+#gamePlay h2 {
+    grid-column: 1/-1;
+} */
+
+#gameInfo {
+    grid-row: 2/3;
 }
 
+#catBelly {
+    grid-row: 4/5;
+}
+
+#catBelly img {
+    height: 300px;
+}
+
+#gameInput {
+    grid-row: 5/6;
+}
+
+#gameResults {
+    width: 250px;
+    height: 250px;
+    position: absolute;
+    translate: 125% 142%;
+}
+
+/* Contact section */
 #contact {
-    background-color: var(--grey);
+    background-color: var(--light-grey);
     padding: 20px 10px;
 }
 
@@ -101,19 +173,24 @@ header {
     display: grid;
     grid-template-areas: 
     "name pref"
-    "phone comments"
     "email comments"
+    "phone comments"
     "submit submit";
     justify-content: center;
     gap: 1rem;
 }
+
 #contact form div {
     display: flex;
     flex-direction: column;
-    /* height: 2rem; */
 }
+
+
 #nameInput {
     grid-area: name;
+}
+#emailInput{
+    grid-area: email;
 }
 #phoneInput {
     grid-area: phone;
@@ -129,7 +206,7 @@ textarea {
     outline-offset: -1px;
     border-radius: 5px;
 }
-form fieldset {
+.pref-method-fieldset{
     grid-area: pref;
     border: 2px solid var(--light-coral-500);
 }
@@ -146,6 +223,7 @@ form fieldset {
     border-style: inset;
 }
 
+/* footer styles */
 footer {
     text-align: center;
 }
