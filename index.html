@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <script defer src="index.js"></script>
     <title>idk cats?</title>
@@ -10,8 +13,7 @@
 <body>
     <header>
         <h1>CATS!</h1>
-        <span id="darkModeToggle">
-        </span>
+        <span id="darkModeToggle"></span>
         <nav class="main-navigation">
             <ul class="nav-list">
                 <li class="nav-list-item">
@@ -35,47 +37,41 @@
             </section>
         </section>
         <section id="gamePlay">
-            <h2>Belly Pets!</h2>
+            <h2>Time to Pet Some Bellies!</h2>
             <div class="gameInfo">
-                <p>Feeling lucky?<br>
-                    Can you pet this cat's belly without getting attacked?</p>
+                <p>Can you pet this cat's belly without getting attacked?<br>
+                    Try your luck by entering a value into the area below!
+                </p>
                 <p>You’ll have to guess the exact number of pets they want.<br>
-                    The cat will only tolerate 10 pets max.</p> 
+                    But keep in mind that the cat will only tolerate 10 pets max.</p> 
             </div>
-            <p id="gameResults"></p>
             <form id="gameInput">
                 <label for="petCount">So, how many belly pets you gonna give?</label>
                 <input type="number" name="petCount" id="petCount" min="1" max="10">
                 <button id="petBellyBtn">Enter</button>
             </form>
             <div id="catBelly"></div>
+            <p id="gameResults"></p>
         </section>
         <section id="contact">
             <h2>Contact Me</h2>
             <form id="contactForm">
                 <div id="nameInput">
                     <label for="name">Full Name<span class="required">*</span></label>
-                    <span class="error-message hidden">Please enter both your first and last name</span>
-                    <span class="validation">
-                        <input type="text" name="name" id="name" required>
-                    </span>
+                    <span class="error-message"></span>
+                    <input type="text" name="name" id="name" required>
                 </div>
                 <div id="emailInput">
-                    <label for="email">Email Address</label>
-                    <span class="error-message hidden">Please enter an email address</span>
-                    <span class="validation">
-                        <input type="email" name="email" id="email" required>
-                    </span>
+                    <label for="email">Email Address<span class="required">*</span></label>
+                    <span class="error-message"></span>
+                    <input type="email" name="email" id="email" required>
                 </div>
                 <div id="phoneInput">
-                    <label for="phone">Phone Number</label>
-                    <span class="error-message hidden">Please enter a ten digit phone number</span>
-                    <span class="validation">
-                        <input type="number" name="phone" id="phone" minlength="10" maxlength="10" required>
-                    </span>
-
+                    <label for="phone">Phone Number<span class="required hidden">*</span></label>
+                    <span class="error-message"></span>
+                    <input type="tel" name="phone" id="phone" minlength="10" maxlength="10">
                 </div>
-                <fieldset class="pref-method-fieldset">
+                <fieldset id="prefMethodFieldset">
                     <legend>Preferred Contact Method: <span class="required">*</span></legend>
                     
                     <input type="radio" name="contactPref" id="email-pref" value="email-pref" required checked>
@@ -86,10 +82,8 @@
                 </fieldset>
                 <div id="commentInput">
                     <label for="comments">Comments<span class="required">*</span></label>
-                    <span class="error-message hidden">Please enter a comment</span>
-                    <span class="validation">
-                        <textarea name="comments" id="comments" required></textarea>
-                    </span>
+                    <span class="error-message"></span>
+                    <textarea name="comments" id="comments" required></textarea>
                 </div>
                 
                 <button id="contactSubmitBtn" type="submit">Submit</button>

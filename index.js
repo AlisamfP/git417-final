@@ -37,15 +37,22 @@ let catList = [
     }
 ];
 
-let iconList = {
-    "light": { 
-        "catSrc": "images/blackCat.svg",
+
+let colorPallete = {
+    "light": {
+        "textColor": "#333",
+        "backgroundColor": "#e29587",
+        "sectionColor": "#d3d3d3",
+        "catSrc": "images/blackCat.svg"
     },
-    "dark": { 
+    "dark": {
+        "textColor": "#D1B39F",
+        "backgroundColor": "#333",
+        "sectionColor": "#636363",
         "catSrc": "images/skellyCat.svg"
     }
-};
-
+}
+let isFormValid = true;
 
 // function to load the cats onto the page after DOM is loaded in
 function loadCats(){
@@ -134,18 +141,21 @@ function petBelly(e){
         }
         // if the user enters fewer pets than the cat wants
         else if(amountOfPets < randomNum){
-            output += `Ooops. The cat wanted ${randomNum} ${checkforOnePet(randomNum)} and you only gave them ${amountOfPets} ${checkforOnePet(amountOfPets)}.<br>
+            output += `Dang.<br>The cat wanted ${randomNum} ${checkforOnePet(randomNum)} and you only gave them ${amountOfPets} ${checkforOnePet(amountOfPets)}.<br>
             That's ${randomNum - amountOfPets} fewer ${checkforOnePet(randomNum - amountOfPets)} than what they wanted<br>
             Better luck next time buddy!`;
         }
         // if the user enters more pets than the cat wants
         else {
-            output += `Ooops. The cat wanted ${randomNum} ${checkforOnePet(randomNum)} and you gave them ${amountOfPets} ${checkforOnePet(amountOfPets)}.<br>
+            output += `Ooops<br>The cat wanted ${randomNum} ${checkforOnePet(randomNum)} and you gave them ${amountOfPets} ${checkforOnePet(amountOfPets)}.<br>
             That's ${amountOfPets - randomNum} more ${checkforOnePet(amountOfPets - randomNum)} than what they wanted.<br>
             Better luck next time champ!`;
         }
         // output the results
         gameResults.innerHTML = output;
+        // adding the border to the results after the game results display so the padding
+        // gameResults.style.setProperty("border", ("2px double var(--dark-coral)"))
+        gameResults.style.setProperty("padding", ("10px"))
     }
 };
 
@@ -211,49 +221,31 @@ function handleDarkModeClick(e){
 
 // function to toggle dark mode based on the local storage variable
 function toggleDarkMode(){
-    console.log("toggling dark mode")
     // grab the current dark mode state from local storage
     let darkModeState = JSON.parse(localStorage.getItem("darkMode"))
     
-    // create an array to hold all the updating items
-    let updateItems = []
+    // grab the root element to change the values on
+    let root = document.documentElement;
 
     // grab the span to put the icon into
     let darkModeCatIcon = document.getElementById("darkModeToggle");
+
     if(darkModeState){
-        darkModeCatIcon.innerHTML = `<img src=${iconList["dark"].catSrc}>`
+        root.style.setProperty('--background-color', colorPallete["dark"].backgroundColor);
+        root.style.setProperty('--text-color', colorPallete["dark"].textColor);
+        root.style.setProperty('--section-color', colorPallete["dark"].sectionColor);
+        darkModeCatIcon.innerHTML = `<img src=${colorPallete["dark"].catSrc}>`;
     }
     else{
-        darkModeCatIcon.innerHTML = `<img src=${iconList["light"].catSrc}>`
+        root.style.setProperty('--background-color', colorPallete["light"].backgroundColor);
+        root.style.setProperty('--text-color', colorPallete["light"].textColor);
+        root.style.setProperty('--section-color', colorPallete["light"].sectionColor);
+        darkModeCatIcon.innerHTML = `<img src=${colorPallete["light"].catSrc}>`;
     }
-
-    // grab the two areas that get an alt background color than the body
-    updateItems.push(document.getElementById("productDisplay"));
-    updateItems.push(document.getElementById("contact"));
-    // add the body element to the update items array
-    updateItems.push(document.body);
-
-    // loop through the update items array to add/remove classes
-    for(let item in updateItems){
-        // if darkModeState is true, toggle dark mode on
-        if(darkModeState){
-            // add dark mode and remove light mode
-            updateItems[item].classList.add("dark-mode")
-            updateItems[item].classList.remove("light-mode")
-        }
-        else { //if dark mode is false, toggle dark mode off
-            //remove dark mode class and add light mode class
-            updateItems[item].classList.remove("dark-mode")
-            updateItems[item].classList.add("light-mode")
-        }
-    }
-    
 }
 
 function validateForm(e){
     e.preventDefault();
-    let success = "✓";
-    let fail = "×";
 
     // grab form and save to variable
     let contactForm = document.querySelector("#contactForm");
@@ -263,116 +255,163 @@ function validateForm(e){
 
     // grab the spans with the validation checkmark or x
     let validationSpans = document.querySelectorAll(".validation");
-    console.log(validationSpans)
     
     // set isValid to be true by default
     let isFormValid = true;
     
     // clear out error class from inputs
-    contactForm.name.classList.remove("input-error")
-    contactForm.phone.classList.remove("input-error")
-    contactForm.email.classList.remove("input-error")
-    contactForm.comments.classList.remove("input-error")
+    contactForm.name.classList.remove("input-error");
+    contactForm.phone.classList.remove("input-error");
+    contactForm.email.classList.remove("input-error");
+    contactForm.comments.classList.remove("input-error");
 
-    // add hidden class to error messages
-    errorMessages.forEach(function(messageSpan){
-        messageSpan.classList.add("hidden");
-    });
-    validationSpans.forEach(function(span){
-        span.className = "validation";
-    })
+    // check if the form elements are valid
+    let nameValid = validateName();
+    let emailValid = handleValidateEmail();
+    let phoneValid = validatePhoneNum();
+    let commentValid = validateComments();
+
+    // if all form elements pass validation, set isFormValid to true
+    if(nameValid && emailValid && phoneValid && commentValid){
+        console.log("FORM IS VALID")
+        isFormValid = true;
+    }
+
     
-    //  check if the name is valid
-    let isNameValid = validateName(contactForm.name.value)
-    // if name is not valid
-    if(!isNameValid){
-        // add the input error class to the inputs
-        contactForm.name.classList.add("input-error");
-        // remove the hidden class from the error message
-        errorMessages[0].classList.remove("hidden");
-        // add isNotValid class to show x mark for invalid input
-        validationSpans[0].classList.add("isNotValid");
-        // set isFormValid to false
-        isFormValid = false;
-    }
-    else if(isNameValid){ // if name is valid
-        // add the isValid class to show the checkmark
-        validationSpans[0].classList.add("isValid"); 
-     }
- 
-
-    // check if the email is valid
-    let isEmailValid = validateEmail(contactForm.email.value)
-    // if email is not valid
-    if(!isEmailValid){
-        // add the input error class to the inputs
-        contactForm.email.classList.add("input-error");
-        // remove the hidden class from the error message
-        errorMessages[1].classList.remove("hidden");
-        // add isNotValid class to show x mark for invalid input
-        validationSpans[1].classList.add("isNotValid");
-        // set isFormValid to false
-        isFormValid = false;
-    }
-    else if(isEmailValid){
-        // add the isValid class to show the checkmark
-        validationSpans[1].classList.add("isValid"); 
-    }
-
-    // check if the phone number is valid
-    let isPhoneValid = validatePhoneNum(contactForm.phone.value)
-    if(!isPhoneValid){
-        // add the input error class to the inputs
-        contactForm.phone.classList.add("input-error");
-        // remove the hidden class from the error message
-        errorMessages[2].classList.remove("hidden");
-        // add isNotValid class to show x mark for invalid input
-        validationSpans[2].classList.add("isNotValid");
-        // set isFormValid to false
-        isFormValid = false;
-    }
-    else if(isPhoneValid){
-        // add the isValid class to show the checkmark
-       validationSpans[2].classList.add("isValid"); 
-    }
-
-    // check if the comment section is valid
-    let isCommentValid = validateComments(contactForm.comments.value);
-    if(!isCommentValid){
-        // add the input error class to the inputs
-        contactForm.comments.classList.add("input-error");
-        // remove the hidden class from the error message
-        errorMessages[3].classList.remove("hidden");
-        // add isNotValid class to show x mark for invalid input
-        validationSpans[3].classList.add("isNotValid");
-        // set isFormValid to false
-        isFormValid = false;
-    }
-    else if(isCommentValid){
-        // add the isValid class to show the checkmark
-       validationSpans[3].classList.add("isValid"); 
-    }
-    
-}
-
-function validateEmail(email){
-    let emailRegex = /.+@\w+.\w+/;
-    return emailRegex.test(email);
-
 }
 
 function validateName(name){
     let nameRegex = /\w+\s\w+/;
-    return nameRegex.test(name);
+
+    let nameInput = document.getElementById("name");
+    let errorSpan = nameInput.previousElementSibling;
+
+    errorSpan.innerHTML = "";
+
+    try {
+        if(nameInput.value === "" && nameInput.required){
+            throw new Error("name is required")
+        }
+        if(!nameRegex.test(nameInput.value)){
+            throw new Error("Please enter your first and last name")
+        }
+        else{
+            return true;
+
+        }
+        
+    } catch (error) {
+        nameInput.classList.add("input-error");
+        // set isFormValid to false
+        errorSpan.innerHTML = error.message;
+        return false
+    }
 }
 
-function validatePhoneNum(phone){
-    let phoneRegex = /[0-9]{10}/;
-    return phoneRegex.test(phone);
+function handleValidateEmail(){
+    let emailInput = document.getElementById("email");
+    let errorSpan = emailInput.previousElementSibling;
+    
+    let emailRegex = /.+@\w+.\w+/;
+
+    errorSpan.innerHTML = "";
+
+    try {
+        // if email is empty and not required, return early with true
+        if(emailInput.value === "" && !(emailInput.required)){
+            emailInput.classList.add("input-validated");
+            return true;
+        }
+        if(emailInput.value === "" && emailInput.required){
+            throw new Error("Email is required")
+        }
+        if(!emailRegex.test(emailInput.value)){
+            throw new Error("Please enter a valid email address")
+        }
+        else{
+            emailInput.classList.add("input-validated");
+            return true;
+        }
+    } catch (error) {
+        emailInput.classList.add("input-error");
+        errorSpan.innerHTML = error.message;
+        return false
+    }
+}
+
+function validatePhoneNum(){
+    let phoneRegex = /^\d{10}$/;
+
+    let phoneInput = document.getElementById("phone");
+    let errorSpan = phoneInput.previousElementSibling;
+
+    errorSpan.innerHTML = "";
+    try {
+        if(phoneInput.value === "" && phoneInput.required){
+            throw new Error("Phone number is required")
+        }
+        if(!(phoneRegex.test(phoneInput.value)) && phoneInput.value !== ""){
+            throw new Error("Please enter a valid phone number")
+        }
+        else{
+            phoneInput.classList.add("input-validated");
+            return true;
+        }
+        
+    } catch (error) {
+        phoneInput.classList.add("input-error");
+        errorSpan.innerHTML = error.message;
+        return false
+    }
 }
 
 function validateComments(message){
-    if(message === "") return false;
+    let commentsInput = document.getElementById("comments");
+    let errorSpan = commentsInput.previousElementSibling;
+
+    errorSpan.innerHTML = "";
+    try {
+        if(commentsInput.value === "" && commentsInput.required){
+            throw new Error("comments are required")
+        }
+        else{
+            commentsInput.classList.add("input-validated");
+            return true;
+        }
+    } catch (error) {
+        commentsInput.classList.add("input-error");
+        errorSpan.innerHTML = error.message;
+        return false
+    }
+
+}
+
+
+function handleRadios(e){
+    e.preventDefault();
+
+    // grab the current preferred contact method
+    let prefContactMethod = document.querySelector('input[name=contactPref]:checked').value;
+    let phoneRadio = document.getElementById('phone');
+    let phoneReqStar = document.querySelector('#phoneInput .required');  
+    let emailRadio = document.getElementById('email');
+    let emailReqStar = document.querySelector('#emailInput .required');
+    // reset required states
+    phoneRadio.required = false;
+    emailRadio.required = false;
+
+    // update required on input depending on preferred contact method
+    if(prefContactMethod === 'phone-pref'){
+        phoneRadio.required = true;
+        phoneReqStar.classList.remove('hidden')
+        emailReqStar.classList.add('hidden');
+    }
+    else{
+        emailRadio.required = true;
+        emailReqStar.classList.remove('hidden')
+        phoneReqStar.classList.add('hidden');
+
+    }
 }
 
 
@@ -385,3 +424,6 @@ document.getElementById("darkModeToggle").addEventListener("click", handleDarkMo
 document.getElementById("petBellyBtn").addEventListener("click", petBelly);
 // event listener for contact form validation
 document.getElementById("contactSubmitBtn").addEventListener("click", validateForm)
+
+// add event listeners for the radio buttons to update required fields
+document.getElementById("contactForm").addEventListener("change", handleRadios);

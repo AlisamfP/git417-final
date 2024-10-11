@@ -1,52 +1,62 @@
 :root{
     --max_width: 1280px;
 
-    --light-coral-500: #e29587;
-    --light-grey: #d3d3d3;
+    --text-color: #333;
+    --background-color: #e29587;
+
+    --section-color: #d3d3d3;
+    --section-color-alt: #b6c7cb;
+
+    --fonts: "Figtree", sans-serif;
 
     --med-grey: #636363;
-    
+    --light-coral: #e29587;
     --dark-coral: #8c5a51;
-    --dark-grey: #333;
     --dark-mode-text-color: #D1B39F;
-}
-
-.isValid:after{
-    content: '✓';
-    color: green;
-
-}
-.isNotValid:after{
-    content: '×';
-    color: red;
 }
 
 body {
     max-width: var(--max_width);
     margin: 0 auto;
     font-size: 16px;
-}
-/* light mode styles */
-.light-mode {
-    background-color: var(--light-coral-500);
-    color: var(--dark-grey);
-}
-
-/* dark mode styles */
-.dark-mode{
-    background-color: var(--dark-grey);
-    color: var(--dark-mode-text-color);
-}
-.dark-mode-alt {
-    background-color: var(--med-grey);
+    background-color: var(--background-color);
+    color: var(--text-color);
+    font-family: var(--fonts);
 }
 
 header {
     display: grid;
     grid-template-columns: auto auto;
-    align-items: end;
+    align-items: center;
     justify-items: center;
-    fill-opacity: 1;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    background-color: var(--background-color);
+    width: 80%;
+    margin: 0 auto;
+}
+
+h1 {
+    font-size: 2.5em;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+h2 {
+    font-size: 2em;
+    font-weight: bold;
+}
+
+main {
+    width: 80%;
+    margin: 0 auto;
+    background-color: var(--section-color);
+}
+
+/* moving sections down to deal with sticky header */
+#productDisplay, #gamePlay, #contact{
+    padding: 125px;
 }
 
 #darkModeToggle {
@@ -56,13 +66,24 @@ header {
 
 #darkModeToggle img {
     width: 100px;
-    height: 150px;
-    margin-bottom: -21px
+    margin-bottom: -21px;
+    text-decoration: underline;
 }
 
 .input-error {
-    border: 1px solid red;
+    outline: 1px solid red;
+    outline-offset: -1px;
 }
+.input-validated {
+    outline: 1px solid green;
+    outline-offset: -1px;
+}
+
+.error-message{
+    color: red;
+    font-size: 0.75rem;
+}
+
 .hidden {
     display: none;
 }
@@ -79,15 +100,19 @@ header {
     gap: 2rem;
 }
 .nav-list-link{
+    color: var(--text-color);
     text-decoration: none;
-    color: var(--dark-grey);
-    border-bottom: 3px solid var(--light-grey);
+    border-bottom: 3px solid var(--section-color-alt);
     margin: 1rem;
     padding: 0.5rem;
 }
+.nav-list-link:hover{
+    border-top: 3px solid var(--section-color);
+    border-color: var(--dark-coral);
+}
 /* product display area aka cat selector */
 #productDisplay {
-    background-color: var(--light-grey);
+    background-color: var(--section-color);
     display: grid;
     grid-template-rows: repeat(3, auto);
     justify-content: center;
@@ -97,21 +122,36 @@ header {
     display: grid;
     grid-template-columns: repeat(4, auto);
     grid-row: 3 / 4;
+    justify-content: space-evenly;
+    text-align: center;
+}
+.cat-selector-list-item{
+    font-weight: bold;
+    width: 100px;
+    padding: 15px 20px;
+    border: 2px outset var(--dark-coral);
+    background-color: var(--section-color);
+}
+.cat-selector-list-item:hover{
+    box-shadow: 3px 5px 11px -3px #333;
+    border: 2px inset var(--light-coral);
 }
 .selected-cat{
-    text-decoration: underline;
-    text-underline-offset: 0.5rem;
+    color: var(--dark-mode-text-color);
+    background-color: var(--dark-coral);
 }
 #catInformation{
     display: grid;
-    grid-template-columns: min-content 400px;
+    grid-template-columns: min-content minmax(min-content, 400px);
     grid-template-rows: 150px auto;
     justify-items: start;
     align-items: start;
+    outline: 2px solid var(--background-color);
+    outline-offset: 6px;
 }
 #catInformation img {
-    height: 350px;
-    width: 350px;
+    max-height: 350px;
+    max-width: 350px;
     object-fit: cover;
     grid-row: 1/3;
 }
@@ -123,9 +163,9 @@ header {
     text-align: center;
 }
 #catDescription {
-    border: 1px solid var(--light-coral-500);
+    border: 1px solid var(--background-color);
     padding: 1rem;
-    margin: 0 1rem;
+    margin: -15% 1rem;
 }
 
 /* game play section aka belly pets */
@@ -134,11 +174,11 @@ header {
     grid-template-columns: auto;
     justify-content: center;
     justify-items: center;
+    background-color: var(--section-color-alt);
+    border-top: 25px solid var(--background-color);
+    border-bottom: 25px solid var(--background-color);
+
 }
-/* 
-#gamePlay h2 {
-    grid-column: 1/-1;
-} */
 
 #gameInfo {
     grid-row: 2/3;
@@ -150,23 +190,22 @@ header {
 
 #catBelly img {
     height: 300px;
+    padding: 12px;
 }
 
 #gameInput {
-    grid-row: 5/6;
+    grid-row: 6/7;
 }
 
 #gameResults {
-    width: 250px;
-    height: 250px;
-    position: absolute;
-    translate: 125% 142%;
+    grid-row: 5/6;
+    border: 2px double var(--dark-coral);
 }
 
 /* Contact section */
 #contact {
-    background-color: var(--light-grey);
-    padding: 20px 10px;
+    background-color: var(--section-color);
+    padding: 50px;
 }
 
 #contact form {
@@ -202,20 +241,20 @@ textarea {
     height: 100px;
     padding: 1rem;
     resize: none;
-    outline: 2px solid var(--light-coral-500);
+    outline: 2px solid var(--light-coral);
     outline-offset: -1px;
     border-radius: 5px;
 }
-.pref-method-fieldset{
+#prefMethodFieldset{
     grid-area: pref;
-    border: 2px solid var(--light-coral-500);
+    border: 2px solid var(--light-coral);
 }
 #contactSubmitBtn {
     grid-area: submit;
     width: 10rem;
     margin: 0 auto;
     height: 2rem;
-    border: 2px outset var(--light-coral-500);
+    border: 2px outset var(--light-coral);
     border-radius: 3px;
 }
 
@@ -225,5 +264,8 @@ textarea {
 
 /* footer styles */
 footer {
+    background-color: var(--section-color);
     text-align: center;
+    padding: 20px 0;
+    border-top: 25px solid var(--background-color);
 }
