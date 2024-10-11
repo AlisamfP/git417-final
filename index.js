@@ -1,5 +1,4 @@
 "use strict";
-console.log("js loaded");
 
 // array to hold all the cats
 let catList = [
@@ -51,51 +50,51 @@ let colorPallete = {
         "sectionColor": "#636363",
         "catSrc": "images/skellyCat.svg"
     }
-}
-let isFormValid = true;
+};
 
-// function to load the cats onto the page after DOM is loaded in
+// create an empty array to hold the contact form submissions in
+let contacts = [];
+
+// function that is called once the DOM is loaded
 function loadCats(){
-    console.log("loading cats...")
-	// grab the section to display menu
+	// grab the menu element to display the selection of cats there are to choose from
 	let catDisplayMenu = document.getElementById("catSelectorMenu");
-    // grab the section to display cat's information
+    // grab the section to display all of the current cat's information
     let catInformation = document.getElementById("catInformation");
-    // grab the section to add the dark mode cat to.
+    // grab the span that holds the cat that changes on dark mode toggle
     let darkModeToggle = document.getElementById("darkModeToggle");
 	
-    //choose random cat in list to show information of
+    //choose random cat from the catList array and set the current cat to it
     let randomCat = catList[getRandomNumber(catList.length)];
-
-    // call function to display the information from the chosen randomCat
     setCurrentCat(randomCat);
     
-	// iterate through array of cats to populate the menu items
+	// iterate through the array of cats to populate the menu element's list items
 	for(let cat in catList){
         // create a new li element
         let menuItem = document.createElement("li");
-        // check if cat is chosen random cat
+
+        // check if the cat from the catList is the same as the randomCat, apply class to that cat. 
+        // subsequent changes to the selected cat class happen insetCurrentCatInList
         if(catList[cat] === randomCat){
-            // if current cat, add relevant class
             menuItem.classList.add('selected-cat');
         }
-        // add li class for styling to new element
+        // add styling class to the new element
         menuItem.classList.add('cat-selector-list-item')
-
-        // set cat name the menu items inner html
+        
+        // set cat name as the menu item's inner html
         menuItem.innerHTML = catList[cat].name;
+        
         //add event listener to change to a different cat on click
         menuItem.addEventListener("click", setCurrentCatInList);
-        // append the menu item to the menu
+        
+        // append the created menu item to the menu
         catDisplayMenu.appendChild(menuItem);
     }
 
-    // HANDLING DARK MODE
-    // check to see if the dark mode variable is already set in local storage and if so toggle dark mode function
-    if (window.localStorage.getItem("darkMode")){
-    }
-    else {
-        // if local storage variable is not set, set it to false and call dark mode function
+
+
+    // if local storage variable is not set, set it to false and call dark mode function
+    if (!window.localStorage.getItem("darkMode")){
         window.localStorage.setItem("darkMode", false);
     }
     toggleDarkMode();
@@ -153,9 +152,8 @@ function petBelly(e){
         }
         // output the results
         gameResults.innerHTML = output;
-        // adding the border to the results after the game results display so the padding
-        // gameResults.style.setProperty("border", ("2px double var(--dark-coral)"))
-        gameResults.style.setProperty("padding", ("10px"))
+        // adding the padding after the game results display because otherwise with the border a little 10px square would show
+        gameResults.style.setProperty("border-width", ("2px"))
     }
 };
 
@@ -169,13 +167,16 @@ function setCurrentCat(cat){
     // SET CAT INFORMATION
     // create an empty output string to build onto and empty out previous info
     let output = "";
-    catInformation.innerHTML = "";
+    catInformation.lastElementChild.innerHTML = "";
 
+    document.getElementById("catName").innerHTML = `${cat.name}`
+
+    
     // build the output string with the cat information
-    output += `<h3 id="catName">${cat.name}</h3><img src=${cat.href} alt=${cat.alt}><p id="catDescription">${cat.description}</p>`;
+    output += `<img src=${cat.href} alt=${cat.alt}><p id="catDescription">${cat.description}</p>`;
     // set the innerHTML to the output string
-    catInformation.innerHTML = output;
-
+    catInformation.lastElementChild.innerHTML = output;
+    
     // SET CAT BELLY
     // empty out the output string and previous image if any
     output = "";
@@ -212,7 +213,6 @@ function setCurrentCatInList(e){
 }
 
 function handleDarkModeClick(e){
-    console.log("in handle dark mode click")
     e.preventDefault();
     let currentDarkModeState = JSON.parse(localStorage.getItem("darkMode"))
     localStorage.setItem("darkMode", !currentDarkModeState);
@@ -253,33 +253,76 @@ function validateForm(e){
     // grab all the error message spans
     let errorMessages = document.querySelectorAll(".error-message");
 
-    // grab the spans with the validation checkmark or x
-    let validationSpans = document.querySelectorAll(".validation");
-    
-    // set isValid to be true by default
-    let isFormValid = true;
+    // grab the selected radio buttons to save the preferred means of contact to the contact object if forms passes validation
+    // because the html has one of the radio buttons selected by default there should not be a case where there is not a value here
+    let contactPref = document.querySelector('input[name=contactPref]:checked').value;
     
     // clear out error class from inputs
     contactForm.name.classList.remove("input-error");
     contactForm.phone.classList.remove("input-error");
     contactForm.email.classList.remove("input-error");
     contactForm.comments.classList.remove("input-error");
-
+    
     // check if the form elements are valid
     let nameValid = validateName();
     let emailValid = handleValidateEmail();
     let phoneValid = validatePhoneNum();
     let commentValid = validateComments();
-
-    // if all form elements pass validation, set isFormValid to true
-    if(nameValid && emailValid && phoneValid && commentValid){
-        console.log("FORM IS VALID")
-        isFormValid = true;
-    }
-
     
+    // if all form elements pass validation, add the information to the contacts array and display to the screen
+    if(nameValid && emailValid && phoneValid && commentValid){
+        // create contact object to add into the array
+        let contact = {
+            name: contactForm.name.value,
+            email: contactForm.email.value,
+            phone: formatPhoneNumber(contactForm.phone.value),
+            contactPref: formatContactPref(contactPref),
+            comment: contactForm.comments.value
+        };
+        contacts.push(contact);
+
+        // empty object to build output onto
+        let output = "";
+
+        // add the section and h3 to the output
+        output += `<section id="commentList"><h3>List of Comments</h3>`
+
+        // grab the span the for output will go to if it's valid
+        for(let contact of contacts){
+            output += `<p><strong>Full Name: </strong>${contact.name}<br>
+                        <strong>Email: </strong>${contact.email}<br>
+                        <strong>Phone: </strong>${contact.phone}<br>
+                        <strong>Preferred Means of contact: </strong>${contact.contactPref}<br>
+                        <strong>Comment: </strong>${contact.comment}<br></p>`
+        }
+
+        // close out the section tag on the output string
+        output += `</section>`
+
+        // grab the form output span and display the list of comments
+        document.getElementById("formOutput").innerHTML = output;
+
+        // reset the form values
+        contactForm.name.value = "";
+        contactForm.email.value = "";
+        contactForm.phone.value = "";
+        contactForm.comments.value = "";
+
+        contactForm.name.classList = "";
+        contactForm.email.classList = "";
+        contactForm.phone.classList = "";
+        contactForm.comments.classList = "";
+    }
 }
 
+
+// FORM VALIDATION FUNCTIONS
+
+// These functions return true/false if the input is invalid
+// sets the error message to display on the screen if there are any
+// adds the correct classes to indicate success/failure
+
+// name validation function
 function validateName(name){
     let nameRegex = /\w+\s\w+/;
 
@@ -308,13 +351,17 @@ function validateName(name){
     }
 }
 
+// email validation function
 function handleValidateEmail(){
     let emailInput = document.getElementById("email");
     let errorSpan = emailInput.previousElementSibling;
     
     let emailRegex = /.+@\w+.\w+/;
 
+    // clear everything out
     errorSpan.innerHTML = "";
+    emailInput.classList.remove("input-validated");
+    emailInput.classList.remove("input-error");
 
     try {
         // if email is empty and not required, return early with true
@@ -323,10 +370,10 @@ function handleValidateEmail(){
             return true;
         }
         if(emailInput.value === "" && emailInput.required){
-            throw new Error("Email is required")
+            throw new Error("Email is required");
         }
         if(!emailRegex.test(emailInput.value)){
-            throw new Error("Please enter a valid email address")
+            throw new Error("Please enter a valid email address");
         }
         else{
             emailInput.classList.add("input-validated");
@@ -335,36 +382,46 @@ function handleValidateEmail(){
     } catch (error) {
         emailInput.classList.add("input-error");
         errorSpan.innerHTML = error.message;
-        return false
+        return false;
     }
 }
 
+// phone number validation function
 function validatePhoneNum(){
+    // regex checks for a phone number consisting of 10 digits and nothing else
     let phoneRegex = /^\d{10}$/;
 
+    // grab the phone input from the html and the error span
     let phoneInput = document.getElementById("phone");
     let errorSpan = phoneInput.previousElementSibling;
 
+    // empty out any previous errors
     errorSpan.innerHTML = "";
     try {
+        // if there is no number inputed but the input is required
         if(phoneInput.value === "" && phoneInput.required){
-            throw new Error("Phone number is required")
+            throw new Error("Phone number is required");
         }
+        // checks if there is input but it's not valid
         if(!(phoneRegex.test(phoneInput.value)) && phoneInput.value !== ""){
-            throw new Error("Please enter a valid phone number")
+            throw new Error("Please enter a valid phone number");
         }
         else{
+            // if the phone number passes validation then the class is added and true is returned
             phoneInput.classList.add("input-validated");
             return true;
         }
         
     } catch (error) {
+        // if there are any errors
+        // add the error class to input, display errors on screen, and return false
         phoneInput.classList.add("input-error");
         errorSpan.innerHTML = error.message;
-        return false
+        return false;
     }
 }
 
+// comment area validation function
 function validateComments(message){
     let commentsInput = document.getElementById("comments");
     let errorSpan = commentsInput.previousElementSibling;
@@ -386,44 +443,66 @@ function validateComments(message){
 
 }
 
-
+// handles the change in required inputs when the preferred contact method option is changed
 function handleRadios(e){
     e.preventDefault();
 
     // grab the current preferred contact method
     let prefContactMethod = document.querySelector('input[name=contactPref]:checked').value;
-    let phoneRadio = document.getElementById('phone');
+
+    // get the phone and email inputs as well as the span containing the required styles and adds the *
+    let phoneInput = document.getElementById('phone');
     let phoneReqStar = document.querySelector('#phoneInput .required');  
-    let emailRadio = document.getElementById('email');
+    let emailInput = document.getElementById('email');
     let emailReqStar = document.querySelector('#emailInput .required');
+
     // reset required states
-    phoneRadio.required = false;
-    emailRadio.required = false;
+    phoneInput.required = false;
+    emailInput.required = false;
 
     // update required on input depending on preferred contact method
     if(prefContactMethod === 'phone-pref'){
-        phoneRadio.required = true;
+        phoneInput.required = true;
         phoneReqStar.classList.remove('hidden')
         emailReqStar.classList.add('hidden');
     }
     else{
-        emailRadio.required = true;
+        emailInput.required = true;
         emailReqStar.classList.remove('hidden')
         phoneReqStar.classList.add('hidden');
 
     }
 }
 
+// FORMATTING FUNCTIONS
+// these are here to sanitize the inputed information to make it better to display
+
+// formats phone number as (xxx) - xxx-xxxx
+function formatPhoneNumber(number){
+    return JSON.stringify(number).replace(/(\d{3})(\d{3})(\d+)/g, "($1) $2-$3");
+}
+
+// returns phone or email as a standalone string depending on the contact pref
+function formatContactPref(contactPref){
+    if(contactPref === "phone-pref"){
+        return "Phone";
+    }else{
+        return "Email";
+    }
+}
 
 
 // wait until the dom is loaded before adding js elements
 window.addEventListener("DOMContentLoaded", loadCats);
+
 // event listener for dark mode toggle
 document.getElementById("darkModeToggle").addEventListener("click", handleDarkModeClick);
+
 // event listener for the game
 document.getElementById("petBellyBtn").addEventListener("click", petBelly);
+
 // event listener for contact form validation
 document.getElementById("contactSubmitBtn").addEventListener("click", validateForm)
 
-// add event listeners for the radio buttons to update required fields
+// add event listener to the form to update required fields on either email or phone depending on the selection since the rest of the form is updated on submit
 document.getElementById("contactForm").addEventListener("change", handleRadios);

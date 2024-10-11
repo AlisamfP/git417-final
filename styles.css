@@ -1,5 +1,6 @@
 :root{
     --max_width: 1280px;
+    --font-size: 18px;
 
     --text-color: #333;
     --background-color: #e29587;
@@ -15,10 +16,17 @@
     --dark-mode-text-color: #D1B39F;
 }
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 body {
     max-width: var(--max_width);
+    width: 80%;
     margin: 0 auto;
-    font-size: 16px;
+    font-size: var(--font-size);
     background-color: var(--background-color);
     color: var(--text-color);
     font-family: var(--fonts);
@@ -33,7 +41,6 @@ header {
     position: sticky;
     top: 0;
     background-color: var(--background-color);
-    width: 80%;
     margin: 0 auto;
 }
 
@@ -49,8 +56,6 @@ h2 {
 }
 
 main {
-    width: 80%;
-    margin: 0 auto;
     background-color: var(--section-color);
 }
 
@@ -127,8 +132,8 @@ main {
 }
 .cat-selector-list-item{
     font-weight: bold;
-    width: 100px;
-    padding: 15px 20px;
+    max-width: 150px;
+    padding: 15px 1rem;
     border: 2px outset var(--dark-coral);
     background-color: var(--section-color);
 }
@@ -141,13 +146,16 @@ main {
     background-color: var(--dark-coral);
 }
 #catInformation{
+    outline: 2px solid var(--background-color);
+    outline-offset: 6px;
+}
+.cat-facts{
     display: grid;
     grid-template-columns: min-content minmax(min-content, 400px);
     grid-template-rows: 150px auto;
     justify-items: start;
     align-items: start;
-    outline: 2px solid var(--background-color);
-    outline-offset: 6px;
+
 }
 #catInformation img {
     max-height: 350px;
@@ -163,9 +171,7 @@ main {
     text-align: center;
 }
 #catDescription {
-    border: 1px solid var(--background-color);
     padding: 1rem;
-    margin: -15% 1rem;
 }
 
 /* game play section aka belly pets */
@@ -174,7 +180,7 @@ main {
     grid-template-columns: auto;
     justify-content: center;
     justify-items: center;
-    background-color: var(--section-color-alt);
+    background-color: var(--section-color);
     border-top: 25px solid var(--background-color);
     border-bottom: 25px solid var(--background-color);
 
@@ -195,11 +201,18 @@ main {
 
 #gameInput {
     grid-row: 6/7;
+    display: flex;
+    flex-direction: row;
+}
+
+#gameInput label {
+    padding-right: 1rem;
 }
 
 #gameResults {
     grid-row: 5/6;
-    border: 2px double var(--dark-coral);
+    border: 0px double var(--dark-coral);
+    padding: 10px;
 }
 
 /* Contact section */
