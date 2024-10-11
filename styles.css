@@ -141,7 +141,7 @@ main {
 }
 
 .cat-selector-list-item:hover{
-    box-shadow: 3px 5px 11px -3px #333;
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
     border: 2px inset var(--light-coral);
 }
 
@@ -219,6 +219,7 @@ main {
     grid-row: 6/7;
     display: flex;
     flex-direction: row;
+    align-items: flex-end;
 }
 
 #gameInput label {
@@ -245,11 +246,16 @@ main {
     width: 100px;
     height: 40px;
     margin: 0 auto;
-    border: 2px outset var(--light-coral);
-    border-radius: 10px;
+    border: 2px outset var(--text-color);
+    border-radius: 25px;
+    margin-left: 20px;
+    background-color: var(--section-color-alt);
 }
 #petBellyBtn:hover {
-    
+    border: 2px inset var(--background-color);
+    color: var(--background-color);
+    background-color: var(--text-color);
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
 }
 
 
@@ -348,12 +354,16 @@ textarea {
     width: 10rem;
     margin: 0 auto;
     height: 2rem;
-    border: 2px outset var(--light-coral);
-    border-radius: 3px;
+    border-radius: 25px;
+    border: 2px outset var(--text-color);
+    background-color: var(--section-color-alt);
 }
-
 #contactSubmitBtn:hover {
+    background-color: var(--text-color);
+    border: 2px inset var(--background-color);
+    color: var(--background-color);
     border-style: inset;
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
 }
 
 
