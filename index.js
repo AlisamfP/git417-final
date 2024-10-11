@@ -1,43 +1,43 @@
 "use strict";
 
-// array to hold all the cats
+// array to hold all the cats and their information
 let catList = [
     {
         name: "Thundercat",
         // description: "He's so sweet he gave himself diabetes. Certified therapy animal. Purrs can be heard from across the room.",
         description: ["He's so sweet he gave himself diabetes.", "Certified therapy animal.", "Purrs can be heard from across the room."],
         href: "images/thunder.jpg",
-        alt: "",
+        alt: "white and brown cat laying inside of a paper bag looking at the camera",
         belly: "images/thunderbelly.png",
-        bellyAlt: ""
+        bellyAlt: "white cat with brown spots laying stretched out with belly facing and looking prime for pets"
     },
     {
         name: "Penny",
         description: ["Sassy.", "Named after the character in Dr. Horrible's Sing Along Blog.", "Plays fetch and loves hairties.", "Sings to her toys when no one is around"],
         href: "images/penny.jpg",
-        alt: "",
+        alt: "brown and white tabby cat with a chubbby belly walking outside in the sun",
         belly: "images/pennybelly.png",
-        bellyAlt: ""
+        bellyAlt: "brown and white striped tabby cat sleeping on its side with belly exposed"
     },
     {
         name: "Baby",
         description: ["A prince.", "The oldest of the cats and the most insistent when needing pets.", "Originally named falafel waffle.", "It is difficult to find a picture of him by himself because he's always cuddling with another cat."],
         href: "images/baby.jpg",
-        alt: "",
+        alt: "long hair black and white cat with crossed front paws sitting on a grey couch looking very regal",
         belly: "images/babybelly.png",
-        bellyAlt: ""
+        bellyAlt: "fluffly white and black cat sleeping peacefully"
     },
     {
         name: "Taquito",
         description: ["She got her name because she was found in a couch, and a taquito was also found in that couch.", "Basically a garbage disposal who will eat everything and anything", "Not the biggest fan of others"],
         href: "images/taquito.jpg",
-        alt: "",
+        alt: "close up of a short hair brown and white tabby cat laying op a carpet protecting shoes with bright green eyes",
         belly: "images/tacobelly.png",
-        bellyAlt: ""
+        bellyAlt: "brown and white tabby with belly exposed looking up at the camera like 'I dare you to pet me'"
     }
 ];
 
-
+// obj containing all of the dark and light mode information
 let colorPallete = {
     "light": {
         "textColor": "#333",
@@ -163,7 +163,7 @@ function petBelly(e){
         // output the results
     }
     gameResults.innerHTML = output;
-    // adding the padding after the game results display because otherwise with the border a little 10px square would show
+    // adding the padding to the game results after they display because otherwise with the border a little 10px square would show
     gameResults.style.setProperty("border-width", ("2px"))
 };
 
@@ -268,6 +268,8 @@ function toggleDarkMode(){
     }
 }
 
+
+// this function validates the form and updates the form
 function validateForm(e){
     e.preventDefault();
 
