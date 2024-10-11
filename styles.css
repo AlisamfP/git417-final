@@ -66,6 +66,7 @@ h2 {
     font-size: 2em;
     font-weight: bold;
     margin: 0;
+    font-variant: small-caps;
 }
 
 main {
@@ -120,10 +121,16 @@ main {
     display: flex;
 }
 
-#darkModeToggle img {
+.cat-dark-mode {
     width: 100px;
-    margin-bottom: -21px;
-    text-decoration: underline;
+    margin-bottom: -18px;
+}
+
+.lightbulb {
+    width: 70px;
+    position: absolute;
+    top: 0;
+    right: 5px;
 }
 
 .toggle-text{

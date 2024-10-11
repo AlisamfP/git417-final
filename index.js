@@ -44,14 +44,16 @@ let colorPallete = {
         "backgroundColor": "#e29587",
         "sectionColor": "#dedede",
         "altTextColor": "#125464",
-        "catSrc": "images/blackCat.svg"
+        "catSrc": "images/blackCat.svg",
+        "lbSrc": "images/lbOn.svg"
     },
     "dark": {
         "textColor": "#D1B39F",
         "backgroundColor": "#333",
         "sectionColor": "#636363",
         "altTextColor": "#b6c7cb",
-        "catSrc": "images/skellyCat.svg"
+        "catSrc": "images/skellyCat.svg",
+        "lbSrc": "images/lbOff.svg"
     }
 };
 
@@ -251,14 +253,18 @@ function toggleDarkMode(){
         root.style.setProperty('--text-color', colorPallete["dark"].textColor);
         root.style.setProperty('--section-color', colorPallete["dark"].sectionColor);
         root.style.setProperty('--alt-text', colorPallete["dark"].altTextColor);
-        darkModeCatIcon.innerHTML = `<small class="toggle-text">Click me to toggle dark mode</small><img src=${colorPallete["dark"].catSrc}>`;
+        darkModeCatIcon.innerHTML = `<img class="lightbulb" src=${colorPallete["dark"].lbSrc}>
+                                    <small class="toggle-text">Click me to toggle dark mode</small>
+                                    <img class="cat-dark-mode" src=${colorPallete["dark"].catSrc}>`;
     }
     else{
         root.style.setProperty('--background-color', colorPallete["light"].backgroundColor);
         root.style.setProperty('--text-color', colorPallete["light"].textColor);
         root.style.setProperty('--section-color', colorPallete["light"].sectionColor);
         root.style.setProperty('--alt-text', colorPallete["light"].altTextColor);
-        darkModeCatIcon.innerHTML = `<small class="toggle-text">Click me to toggle dark mode</small><img src=${colorPallete["light"].catSrc}>`;
+        darkModeCatIcon.innerHTML = `<img class="lightbulb" src=${colorPallete["light"].lbSrc}>
+                                    <small class="toggle-text">Click me to toggle dark mode</small>
+                                    <img class="cat-dark-mode" src=${colorPallete["light"].catSrc}>`;
     }
 }
 
