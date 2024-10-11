@@ -118,44 +118,52 @@ function petBelly(e){
 
     // set output to empty string
     let output = "";
-
+    
+    // generate a random number from one to ten. inc by 1 to offset from 0.
+    let randomNum = parseInt(getRandomNumber(10) + 1);
     // check and show an error if number not entered
-    if(petCount.value < 1){
+    if(petCount.value === ''){
         output += "Please enter a value";
-        gameResults.innerHTML = output;
+    }
+    else if(petCount.value > 10 || petCount.value < 1){
+        output += `Please enter a value from 1 to 10`;
     }
     else{   
-        // generate a random number from one to ten. inc by 1 to offset from 0.
-        let randomNum = parseInt(getRandomNumber(10) + 1);
         let amountOfPets = parseInt(petCount.value);
+        let currentCat = document.getElementById("catName").getHTML();
         
         // change pets to pet if the number is 1
         let checkforOnePet = (num) =>
             num !== 1 ? "pets": "pet";
 
+        let checkforOneTime = (num) =>
+            num !== 1 ? "times": "time";
+
         // check to see if the random number and entered value are the same
         if(amountOfPets === randomNum){
-            output += `Purrfect! The cat wanted ${randomNum} ${checkforOnePet(randomNum)} and you gave them exactly ${amountOfPets} ${checkforOnePet(amountOfPets)}!<br>
-            You've won!`;
+            output += `Purrfect Job!<br>${currentCat} wanted ${randomNum} ${checkforOnePet(randomNum)} and you gave them exactly ${amountOfPets} ${checkforOnePet(amountOfPets)}!<br>${currentCat} has climbed into your lap to cuddle.`;
         }
         // if the user enters fewer pets than the cat wants
         else if(amountOfPets < randomNum){
-            output += `Dang.<br>The cat wanted ${randomNum} ${checkforOnePet(randomNum)} and you only gave them ${amountOfPets} ${checkforOnePet(amountOfPets)}.<br>
-            That's ${randomNum - amountOfPets} fewer ${checkforOnePet(randomNum - amountOfPets)} than what they wanted<br>
-            Better luck next time buddy!`;
+            output += `You gave ${currentCat} ${amountOfPets} ${checkforOnePet(amountOfPets)}, but they wanted ${randomNum} ${checkforOnePet(randomNum)}<br>${currentCat} walks away dreaming of ${randomNum - amountOfPets} more ${checkforOnePet(randomNum - amountOfPets)}`;
+            // output += `Dang.<br>The cat wanted ${randomNum} ${checkforOnePet(randomNum)} and you only gave them ${amountOfPets} ${checkforOnePet(amountOfPets)}.<br>
+            // That's ${randomNum - amountOfPets} fewer ${checkforOnePet(randomNum - amountOfPets)} than what they wanted<br>
+            // Better luck next time buddy!`;
         }
         // if the user enters more pets than the cat wants
         else {
-            output += `Ooops<br>The cat wanted ${randomNum} ${checkforOnePet(randomNum)} and you gave them ${amountOfPets} ${checkforOnePet(amountOfPets)}.<br>
-            That's ${amountOfPets - randomNum} more ${checkforOnePet(amountOfPets - randomNum)} than what they wanted.<br>
+            output += `Oh no!<br>You tried to give ${currentCat} ${amountOfPets} ${checkforOnePet(amountOfPets)}, but they only wanted ${randomNum} ${checkforOnePet(randomNum)}<br>
+            Your hand got attacked ${amountOfPets - randomNum} ${checkforOneTime(amountOfPets - randomNum)}.<br>
             Better luck next time champ!`;
         }
         // output the results
-        gameResults.innerHTML = output;
-        // adding the padding after the game results display because otherwise with the border a little 10px square would show
-        gameResults.style.setProperty("border-width", ("2px"))
     }
+    gameResults.innerHTML = output;
+    // adding the padding after the game results display because otherwise with the border a little 10px square would show
+    gameResults.style.setProperty("border-width", ("2px"))
 };
+
+
 
 // takes in a cat obj and sets the cat information area of the page to the appropriate values
 function setCurrentCat(cat){
@@ -291,7 +299,7 @@ function validateForm(e){
         for(let contact of contacts){
             output += `<p><strong>Full Name: </strong>${contact.name}<br>
                         <strong>Email: </strong>${contact.email}<br>
-                        <strong>Phone: </strong>${contact.phone}<br>
+                        <strong>Phone: </strong>${JSON.parse(contact.phone)}<br>
                         <strong>Preferred Means of contact: </strong>${contact.contactPref}<br>
                         <strong>Comment: </strong>${contact.comment}<br></p>`
         }
@@ -366,7 +374,6 @@ function handleValidateEmail(){
     try {
         // if email is empty and not required, return early with true
         if(emailInput.value === "" && !(emailInput.required)){
-            emailInput.classList.add("input-validated");
             return true;
         }
         if(emailInput.value === "" && emailInput.required){
@@ -405,6 +412,10 @@ function validatePhoneNum(){
         // checks if there is input but it's not valid
         if(!(phoneRegex.test(phoneInput.value)) && phoneInput.value !== ""){
             throw new Error("Please enter a valid phone number");
+        }
+        // if there's no input but it's not required, don't set any classes, but return true
+        if(phoneInput.value === "" && !(phoneInput.required)){
+            return true;    
         }
         else{
             // if the phone number passes validation then the class is added and true is returned
