@@ -1,17 +1,15 @@
 :root{
     --max_width: 1280px;
-    --font-size: 18px;
+    --font-size: 16px;
+    --fonts: "Figtree", sans-serif;
 
     --text-color: #333;
-    --alt-text-color: #3d595e;
+    --alt-text: #125464; 
+    
     --background-color: #e29587;
-
     --section-color: #d3d3d3;
     --section-color-alt: #b6c7cb;
 
-    --fonts: "Figtree", sans-serif;
-
-    --med-grey: #636363;
     --light-coral: #e29587;
     --dark-coral: #8c5a51;
     --dark-mode-text-color: #D1B39F;
@@ -23,6 +21,7 @@
 *::after {
   box-sizing: border-box;
 }
+
 
 body {
     max-width: var(--max_width);
@@ -38,7 +37,7 @@ header {
     display: grid;
     grid-template-columns: auto auto;
     align-items: center;
-    justify-items: center;
+    justify-items: start;
     justify-content: space-between;
     position: sticky;
     top: 0;
@@ -51,11 +50,22 @@ h1 {
     font-size: 2.5em;
     font-weight: bold;
     margin: 10px 0;
+    text-transform: uppercase;
+}
+
+.nav-home{
+    text-decoration: none;
+    color: var(--alt-text);
+}
+
+.nav-home:hover {
+    color: var(--text-color);
 }
 
 h2 {
     font-size: 2em;
     font-weight: bold;
+    margin: 0;
 }
 
 main {
@@ -106,12 +116,20 @@ main {
 #darkModeToggle {
     grid-row: 2/3;
     grid-column: 2/3;
+    width: 200px;
+    display: flex;
 }
 
 #darkModeToggle img {
     width: 100px;
     margin-bottom: -21px;
     text-decoration: underline;
+}
+
+.toggle-text{
+    color: var(--text-color);
+    word-wrap: break-word;
+    margin-left: 20px;
 }
 
 
@@ -152,7 +170,8 @@ main {
 
 #catInformation{
     outline: 2px solid var(--background-color);
-    outline-offset: 6px;
+    outline-offset: 100px;
+    width: 800px;
 }
 
 
@@ -166,16 +185,14 @@ main {
 }
 
 #catInformation img {
-    max-height: 350px;
-    max-width: 350px;
+    height: 350px;
+    width: 350px;
     object-fit: cover;
     grid-row: 1/3;
 }
 
 /* box shadow used to create dividing line */
 #catName {
-    grid-column: 2/3;
-    width: 50%;
     margin: 2rem auto;
     box-shadow: 0px 25px 0px -10px;
     text-align: center;
@@ -202,12 +219,13 @@ main {
     border-bottom: 25px solid var(--background-color);
 }
 
-#gameInfo {
-    grid-row: 2/3;
+.gameInfo {
+    padding: 10px;
 }
 
 #catBelly {
-    grid-row: 4/5;
+    background-color: var(--alt-text);
+    border-radius: 50%;
 }
 
 #catBelly img {
@@ -367,7 +385,6 @@ textarea {
 }
 
 
-
 /*  */
 /* footer styles */
 /*  */
@@ -378,6 +395,14 @@ footer {
     border-top: 25px solid var(--background-color);
 }
 
+footer a {
+    text-decoration: none;
+    color: var(--background-color);
+}
+footer a:hover {
+    color: var(--alt-text);
+}
+
 
 /* input validation classes */
 .input-error {
@@ -386,4 +411,18 @@ footer {
 }
 .input-validated {
     border-color: green !important;
+}
+
+/* this code was taken from w3 schools to hide the up and down arrows on the number input for the game play */
+/* https://www.w3schools.com/howto/howto_css_hide_arrow_number.asp */
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
 }

@@ -3,43 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- favicon links -->
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <!-- adding in figtree font from google -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <script defer src="index.js"></script>
-    <title>idk cats?</title>
+    <title>The Cats!</title>
 </head>
 <body>
     <header>
-        <h1>CATS!</h1>
+        <h1><a href="#" class="nav-home">The cats!</a></h1>
         <span id="darkModeToggle"></span>
         <nav class="main-navigation">
             <ul class="nav-list">
                 <li class="nav-list-item">
-                    <a class="nav-list-link" href="#productDisplay">Product Display</a>
+                    <a class="nav-list-link" href="#productDisplay">CHOOSE</a>
                 </li>
                 <li class="nav-list-item">
-                    <a class="nav-list-link" href="#gamePlay">Game Play</a>
+                    <a class="nav-list-link" href="#gamePlay">PET</a>
                 </li>
                 <li class="nav-list-item">
-                    <a class="nav-list-link" href="#contact">Contact</a>
+                    <a class="nav-list-link" href="#contact">CONTACT</a>
                 </li>
             </ul>
         </nav>
     </header>
     <main>
         <section id="productDisplay">
-            <h2>Choose a Cat</h2>
+            <h2>CHOOSE A CAT</h2>
             <menu id="catSelectorMenu"></menu>
             <section id="catInformation">
-                <h3 id="catName">cat name loading</h3>
+                <h3 id="catName">cat name loading...</h3>
                 <span class="cat-facts"></span>
 
             </section>
         </section>
         <section id="gamePlay">
-            <h2>Time to Pet Some Bellies!</h2>
+            <h2>PET THE CATS!</h2>
             <div class="gameInfo">
                 <p>Can you pet this cat's belly without getting attacked?<br>
                     Try your luck by entering a value into the area below!
@@ -56,7 +60,7 @@
             <p id="gameResults"></p>
         </section>
         <section id="contact">
-            <h2>Contact Me</h2>
+            <h2>CONTACT THE CATS!</h2>
             <form id="contactForm">
                 <div id="nameInput">
                     <label for="name">Full Name<span class="required">*</span></label>

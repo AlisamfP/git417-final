@@ -4,7 +4,8 @@
 let catList = [
     {
         name: "Thundercat",
-        description: "He's so sweet he gave himself diabetes. Certified therapy animal. Purrs can be heard from across the room.",
+        // description: "He's so sweet he gave himself diabetes. Certified therapy animal. Purrs can be heard from across the room.",
+        description: ["He's so sweet he gave himself diabetes.", "Certified therapy animal.", "Purrs can be heard from across the room."],
         href: "images/thunder.jpg",
         alt: "",
         belly: "images/thunderbelly.png",
@@ -12,7 +13,7 @@ let catList = [
     },
     {
         name: "Penny",
-        description: "Sassy. Named after the character in Dr. Horrible's Sing Along Blog.",
+        description: ["Sassy.", "Named after the character in Dr. Horrible's Sing Along Blog.", "Plays fetch and loves hairties.", "Sings to her toys when no one is around"],
         href: "images/penny.jpg",
         alt: "",
         belly: "images/pennybelly.png",
@@ -20,7 +21,7 @@ let catList = [
     },
     {
         name: "Baby",
-        description: "A prince. The oldest of the cats and the most insistent when needing pets.",
+        description: ["A prince.", "The oldest of the cats and the most insistent when needing pets.", "Originally named falafel waffle.", "It is difficult to find a picture of him by himself because he's always cuddling with another cat."],
         href: "images/baby.jpg",
         alt: "",
         belly: "images/babybelly.png",
@@ -28,7 +29,7 @@ let catList = [
     },
     {
         name: "Taquito",
-        description: "Found in a couch where the other thing found was a taquito.",
+        description: ["She got her name because she was found in a couch, and a taquito was also found in that couch.", "Basically a garbage disposal who will eat everything and anything", "Not the biggest fan of others"],
         href: "images/taquito.jpg",
         alt: "",
         belly: "images/tacobelly.png",
@@ -41,13 +42,15 @@ let colorPallete = {
     "light": {
         "textColor": "#333",
         "backgroundColor": "#e29587",
-        "sectionColor": "#d3d3d3",
+        "sectionColor": "#dedede",
+        "altTextColor": "#125464",
         "catSrc": "images/blackCat.svg"
     },
     "dark": {
         "textColor": "#D1B39F",
         "backgroundColor": "#333",
         "sectionColor": "#636363",
+        "altTextColor": "#b6c7cb",
         "catSrc": "images/skellyCat.svg"
     }
 };
@@ -152,9 +155,8 @@ function petBelly(e){
         }
         // if the user enters more pets than the cat wants
         else {
-            output += `Oh no!<br>You tried to give ${currentCat} ${amountOfPets} ${checkforOnePet(amountOfPets)}, but they only wanted ${randomNum} ${checkforOnePet(randomNum)}<br>
-            Your hand got attacked ${amountOfPets - randomNum} ${checkforOneTime(amountOfPets - randomNum)}.<br>
-            Better luck next time champ!`;
+            output += `You tried to give ${currentCat} ${amountOfPets} ${checkforOnePet(amountOfPets)}, but they only wanted ${randomNum} ${checkforOnePet(randomNum)}<br>
+            Your hand got attacked ${amountOfPets - randomNum} ${checkforOneTime(amountOfPets - randomNum)}.`;
         }
         // output the results
     }
@@ -179,9 +181,15 @@ function setCurrentCat(cat){
 
     document.getElementById("catName").innerHTML = `${cat.name}`
 
+    // build out the list of cat facts with an empty string and each fact in the array added onto it
+    let description = "";
+    for(let fact in cat.description){
+        description += `<li>${cat.description[fact]}</li>`
+    }
+
     
     // build the output string with the cat information
-    output += `<img src=${cat.href} alt=${cat.alt}><p id="catDescription">${cat.description}</p>`;
+    output += `<img src=${cat.href} alt=${cat.alt}><p id="catDescription"><ul>${description}</ul></p>`;
     // set the innerHTML to the output string
     catInformation.lastElementChild.innerHTML = output;
     
@@ -242,13 +250,15 @@ function toggleDarkMode(){
         root.style.setProperty('--background-color', colorPallete["dark"].backgroundColor);
         root.style.setProperty('--text-color', colorPallete["dark"].textColor);
         root.style.setProperty('--section-color', colorPallete["dark"].sectionColor);
-        darkModeCatIcon.innerHTML = `<img src=${colorPallete["dark"].catSrc}>`;
+        root.style.setProperty('--alt-text', colorPallete["dark"].altTextColor);
+        darkModeCatIcon.innerHTML = `<small class="toggle-text">Click me to toggle dark mode</small><img src=${colorPallete["dark"].catSrc}>`;
     }
     else{
         root.style.setProperty('--background-color', colorPallete["light"].backgroundColor);
         root.style.setProperty('--text-color', colorPallete["light"].textColor);
         root.style.setProperty('--section-color', colorPallete["light"].sectionColor);
-        darkModeCatIcon.innerHTML = `<img src=${colorPallete["light"].catSrc}>`;
+        root.style.setProperty('--alt-text', colorPallete["light"].altTextColor);
+        darkModeCatIcon.innerHTML = `<small class="toggle-text">Click me to toggle dark mode</small><img src=${colorPallete["light"].catSrc}>`;
     }
 }
 
