@@ -14,6 +14,7 @@
     --dark-coral: #8c5a51;
     --dark-mode-text-color: #D1B39F;
     --error-background: rgb(255,0,0,0.1);
+    --red: #ff2727;
 }
 
 *,
@@ -80,7 +81,7 @@ main {
 
 
 .error-message{
-    color: red;
+    color: var(--red);
     font-size: 0.75rem;
     height: 1rem;
 }
@@ -119,6 +120,7 @@ main {
     grid-column: 2/3;
     width: 200px;
     display: flex;
+    cursor: pointer;
 }
 
 .cat-dark-mode {
@@ -164,6 +166,7 @@ main {
     border: 2px outset var(--dark-coral);
     background-color: var(--section-color);
     border-radius: 25px;
+    cursor: pointer;
 }
 
 .cat-selector-list-item:hover{
@@ -287,6 +290,7 @@ main {
     border-radius: 25px;
     margin-left: 20px;
     background-color: var(--section-color-alt);
+    cursor: pointer;
 }
 #petBellyBtn:hover {
     border: 2px inset var(--background-color);
@@ -402,6 +406,7 @@ textarea {
     border-radius: 25px;
     border: 2px outset var(--text-color);
     background-color: var(--section-color-alt);
+    cursor: pointer;
 }
 #contactSubmitBtn:hover {
     background-color: var(--text-color);
@@ -441,7 +446,7 @@ footer a:hover {
 
 /* input validation classes */
 .input-error {
-    border-color: red !important;
+    border-color: var(--red) !important;
     background-color: var(--error-background) !important;
 }
 .input-validated {
@@ -449,7 +454,7 @@ footer a:hover {
 }
 
 .required {
-    color: red;
+    color: var(--red);
 }
 
 /* this code was taken from w3 schools to hide the up and down arrows on the number input for the game play */
