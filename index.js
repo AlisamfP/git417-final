@@ -5,7 +5,7 @@ let catList = [
     {
         name: "Thundercat",
         // description: "He's so sweet he gave himself diabetes. Certified therapy animal. Purrs can be heard from across the room.",
-        description: ["He's so sweet he gave himself diabetes.", "Certified therapy animal.", "Purrs can be heard from across the room."],
+        description: ["He's so sweet he gave himself diabetes.", "Certified therapy animal.", "Namesake comes from the fact that his purrs can be heard from across the room.", "My dad likes him and he doesn't like cats."],
         href: "images/thunder.jpg",
         alt: "white and brown cat laying inside of a paper bag looking at the camera",
         belly: "images/thunderbelly.png",
@@ -45,7 +45,9 @@ let colorPallete = {
         "sectionColor": "#dedede",
         "altTextColor": "#125464",
         "catSrc": "images/blackCat.svg",
-        "lbSrc": "images/lbOn.svg"
+        "catAlt": "cute drawing of simple black cat",
+        "lbSrc": "images/lbOn.svg",
+        "lbAlt": "line drawing of a light bulb lit up and hanging down"
     },
     "dark": {
         "textColor": "#D1B39F",
@@ -53,13 +55,17 @@ let colorPallete = {
         "sectionColor": "#636363",
         "altTextColor": "#b6c7cb",
         "catSrc": "images/skellyCat.svg",
-        "lbSrc": "images/lbOff.svg"
+        "catAlt": "cute drawing of a skeleton cat",
+        "lbSrc": "images/lbOff.svg",
+        "lbAlt": "line drawing of a light bulb not lit up, hanging down"
     }
 };
 
 // create an empty array to hold the contact form submissions in
 let contacts = [];
 
+
+// INITIAL LOADING FUNCTION
 // function that is called once the DOM is loaded
 function loadCats(){
 	// grab the menu element to display the selection of cats there are to choose from
@@ -104,11 +110,6 @@ function loadCats(){
     }
     toggleDarkMode();
 
-}
-
-// takes in a max value and returns a random number up to that value
-function getRandomNumber(maxValue){
-    return Math.floor(Math.random() * maxValue);
 }
 
 // called when game submit button is pressed
@@ -160,11 +161,11 @@ function petBelly(e){
             output += `You tried to give ${currentCat} ${amountOfPets} ${checkforOnePet(amountOfPets)}, but they only wanted ${randomNum} ${checkforOnePet(randomNum)}<br>
             Your hand got attacked ${amountOfPets - randomNum} ${checkforOneTime(amountOfPets - randomNum)}.`;
         }
-        // output the results
     }
+    // output the results 
     gameResults.innerHTML = output;
-    // adding the padding to the game results after they display because otherwise with the border a little 10px square would show
-    gameResults.style.setProperty("border-width", ("2px"))
+    // removing hidden class from the game results
+    gameResults.classList.remove("hidden");
 };
 
 
@@ -191,14 +192,20 @@ function setCurrentCat(cat){
 
     
     // build the output string with the cat information
-    output += `<img src=${cat.href} alt=${cat.alt}><p id="catDescription"><ul>${description}</ul></p>`;
+    output += `<img src=${cat.href} alt=${cat.alt}><ul>${description}</ul>`;
     // set the innerHTML to the output string
     catInformation.lastElementChild.innerHTML = output;
     
-    // SET CAT BELLY
+    // SET CAT BELLY AREA
     // empty out the output string and previous image if any
+
     output = "";
     catBellyArea.innerHTML = ""
+    // also going to empty out the game area results as it could be displaying the previous cat's name
+    let gameResults = document.getElementById("gameResults");
+    gameResults.innerHTML = "";
+    gameResults.classList.add("hidden");
+
     // build the output string with the image
     output += `<img src=${cat.belly} alt=${cat.bellyAlt}>`
     catBellyArea.innerHTML = output;
@@ -230,6 +237,10 @@ function setCurrentCatInList(e){
     setCurrentCat(catList.find(cat => cat.name === selectedCat));
 }
 
+
+// DARK MODE AREA
+// this function is called when the dark mode toggle button is clicked.
+// it toggles the setting in localStorage and then calls the toggleDarkMode function
 function handleDarkModeClick(e){
     e.preventDefault();
     let currentDarkModeState = JSON.parse(localStorage.getItem("darkMode"))
@@ -237,7 +248,7 @@ function handleDarkModeClick(e){
     toggleDarkMode();
 }
 
-// function to toggle dark mode based on the local storage variable
+// function that grabs the value from local storage and updates the root element variables to those in the colorPallete object 
 function toggleDarkMode(){
     // grab the current dark mode state from local storage
     let darkModeState = JSON.parse(localStorage.getItem("darkMode"))
@@ -248,20 +259,24 @@ function toggleDarkMode(){
     // grab the span to put the icon into
     let darkModeCatIcon = document.getElementById("darkModeToggle");
 
-    if(darkModeState){
+    if(darkModeState){ // switching to dark mode
+        // SET ALL THE PROPERTIES
         root.style.setProperty('--background-color', colorPallete["dark"].backgroundColor);
         root.style.setProperty('--text-color', colorPallete["dark"].textColor);
         root.style.setProperty('--section-color', colorPallete["dark"].sectionColor);
         root.style.setProperty('--alt-text', colorPallete["dark"].altTextColor);
+        // change the icon in the top right
         darkModeCatIcon.innerHTML = `<img class="lightbulb" src=${colorPallete["dark"].lbSrc}>
                                     <small class="toggle-text">Click me to toggle dark mode</small>
                                     <img class="cat-dark-mode" src=${colorPallete["dark"].catSrc}>`;
     }
-    else{
+    else{ // switching to light mode
+        // SET ALL THE PROPERTIES
         root.style.setProperty('--background-color', colorPallete["light"].backgroundColor);
         root.style.setProperty('--text-color', colorPallete["light"].textColor);
         root.style.setProperty('--section-color', colorPallete["light"].sectionColor);
         root.style.setProperty('--alt-text', colorPallete["light"].altTextColor);
+        // change the icon in the top right
         darkModeCatIcon.innerHTML = `<img class="lightbulb" src=${colorPallete["light"].lbSrc}>
                                     <small class="toggle-text">Click me to toggle dark mode</small>
                                     <img class="cat-dark-mode" src=${colorPallete["light"].catSrc}>`;
@@ -269,6 +284,10 @@ function toggleDarkMode(){
 }
 
 
+
+
+
+// FORM VALIDATION FUNCTIONS
 // this function validates the form and updates the form
 function validateForm(e){
     e.preventDefault();
@@ -311,19 +330,24 @@ function validateForm(e){
         let output = "";
 
         // add the section and h3 to the output
-        output += `<section id="commentList"><h3>List of Comments</h3>`
+        output += `<section id="commentList"><h3 class="comment-list-title">List of Comments</h3>`
 
         // grab the span the for output will go to if it's valid
         for(let contact of contacts){
-            output += `<p><strong>Full Name: </strong>${contact.name}<br>
-                        <strong>Email: </strong>${contact.email}<br>
-                        <strong>Phone: </strong>${JSON.parse(contact.phone)}<br>
-                        <strong>Preferred Means of contact: </strong>${contact.contactPref}<br>
-                        <strong>Comment: </strong>${contact.comment}<br></p>`
+            output += `<p><strong>Full Name: </strong>${contact.name}<br>`;
+            if(contact.email !== ""){ //output the email only if they provided one
+                output += `<strong>Email: </strong>${contact.email}<br>`;
+            }
+            if(JSON.parse(contact.phone) !== ""){ //output the phone only if they provided one
+                output += `<strong>Phone Number: </strong>${JSON.parse(contact.phone)}<br>`;
+            }
+            // finally add the preferred means and comment to the output
+            output += `<strong>Preferred Means of contact: </strong>${contact.contactPref}<br>
+            <strong>Comment: </strong>${contact.comment}<br></p>`;
         }
 
         // close out the section tag on the output string
-        output += `</section>`
+        output += `</section>`;
 
         // grab the form output span and display the list of comments
         document.getElementById("formOutput").innerHTML = output;
@@ -340,9 +364,6 @@ function validateForm(e){
         contactForm.comments.classList = "";
     }
 }
-
-
-// FORM VALIDATION FUNCTIONS
 
 // These functions return true/false if the input is invalid
 // sets the error message to display on the screen if there are any
@@ -520,6 +541,11 @@ function formatContactPref(contactPref){
     }
 }
 
+
+// takes in a max value and returns a random number up to that value
+function getRandomNumber(maxValue){
+    return Math.floor(Math.random() * maxValue);
+}
 
 // wait until the dom is loaded before adding js elements
 window.addEventListener("DOMContentLoaded", loadCats);
